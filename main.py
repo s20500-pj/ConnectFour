@@ -69,8 +69,8 @@ class ConnectFour(TwoPlayerGame):
         return -100 if self.lose() else 0
 
 
-boardHeight = 5
-boardWidth = 6
+boardHeight = 6
+boardWidth = 7
 
 
 def check_winner(board, player):
@@ -79,34 +79,32 @@ def check_winner(board, player):
     Returns True if the player has connected  4 (or more).
     """
     # check horizontal spaces
-    for y in range(boardHeight):
-        for x in range(boardWidth - 3):
-            if board[x][y] == player and board[x + 1][y] == player and board[x + 2][y] == player and board[x + 3][
-                y] == player:
+    for x in range(boardWidth - 3):
+        for y in range(boardHeight):
+            if board[y][x] == player and board[y][x + 1] == player and board[y][x + 2] == player and board[y][
+                x + 3] == player:
                 return True
 
     # check vertical spaces
     for x in range(boardWidth):
         for y in range(boardHeight - 3):
-            if board[x][y] == player and board[x][y + 1] == player and board[x][y + 2] == player and board[x][
-                y + 3] == player:
+            if board[y][x] == player and board[y + 1][x] == player and board[y + 2][x] == player and board[y + 3][
+                x] == player:
+                return True
+
+    # check / diagonal spaces
+    for x in range(boardWidth - 3):
+        for y in range(boardHeight - 3):
+            if board[y][x] == player and board[y + 1][x + 1] == player and board[y + 2][x + 2] == player and \
+                    board[y + 3][x + 3] == player:
                 return True
 
     # check / diagonal spaces
     for x in range(boardWidth - 3):
         for y in range(3, boardHeight):
-            if board[x][y] == player and board[x + 1][y - 1] == player and board[x + 2][y - 2] == player and \
-                    board[x + 3][y - 3] == player:
+            if board[y][x] == player and board[y - 1][x + 1] == player and board[y - 2][x + 2] == player and \
+                    board[y - 3][x + 3] == player:
                 return True
-
-    # check \ diagonal spaces
-    for x in range(boardWidth - 3):
-        for y in range(boardHeight - 3):
-            if board[x][y] == player and board[x + 1][y + 1] == player and board[x + 2][y + 2] == player and \
-                    board[x + 3][y + 3] == player:
-                return True
-
-    return False
 
 
 if __name__ == "__main__":
