@@ -187,7 +187,7 @@ def printMovies(movieList, mainUserMovies):
     """
     counter = 0
     for i in movieList:
-        if i not in mainUserMovies and counter < 5:
+        if i[0] not in mainUserMovies and counter < 5:
             print(i)
             counter += 1
 
