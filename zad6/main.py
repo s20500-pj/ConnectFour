@@ -8,7 +8,6 @@ import pyautogui as keyboard
 The main goal of the program is to control youtube player,
 by hand gestures captured in your camera.
 List of supported gestures:
-#peace sign - leave program 
 #thumbs up - volume up
 #thumbs down - volume down
 #okay - mute/unMute
