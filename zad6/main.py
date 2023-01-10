@@ -11,10 +11,14 @@ List of supported gestures:
 #peace sign - leave program 
 #thumbs up - volume up
 #thumbs down - volume down
-#call me - mute/unMute
-#stop - stop/play
+#okay - mute/unMute
+#live long - stop/play
 #rock - back 5s
 #fist - forward 5s
+
+Warning:
+Program waits a little when you use gestures like #okay or #live long
+to prevent the app to stop/play or mute/unmute immediately 
 
 You need to have installed packages: tensorflow, pyautogui, mediapipe, numpy, opencv-python
 Authors: Bartosz Kamiński, Michał Czerwiak
@@ -24,7 +28,7 @@ Authors: Bartosz Kamiński, Michał Czerwiak
 Set up mediapipe settings
 """
 mpSolutionHands = mp.solutions.hands
-mpHands = mpSolutionHands.Hands(max_num_hands=1, min_detection_confidence=0.8)
+mpHands = mpSolutionHands.Hands(max_num_hands=1, min_detection_confidence=0.9)
 mpDraw = mp.solutions.drawing_utils
 
 """
@@ -45,9 +49,12 @@ Initialize the webcam, set desired webcam resolution(You can use 1920, 1080 for 
 """
 cap = cv2.VideoCapture(0)
 
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
-
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 360)
+"""
+Implementing counter to stop gesture recognition for certain gestures
+"""
+counter = 0
 while True:
     _, frame = cap.read()
 
@@ -66,7 +73,7 @@ while True:
 
     gestureNameId = -1
 
-    if result.multi_hand_landmarks:
+    if result.multi_hand_landmarks and counter > -1:
         landMarks = []
         for handLandMarks in result.multi_hand_landmarks:
             for lm in handLandMarks.landmark:
@@ -98,20 +105,20 @@ while True:
     """
     Press the appropriate button based on the prediction (control youtube player)
     """
-    if gestureNameId == 4:
+    if gestureNameId == 0:
         keyboard.press("m")
+        counter = -30
     elif gestureNameId == 2:
         keyboard.press("up")
     elif gestureNameId == 3:
         keyboard.press("down")
-    elif gestureNameId == 5:
+    elif gestureNameId == 7:
         keyboard.press("space")
+        counter = -30
     elif gestureNameId == 6:
         keyboard.press("left")
     elif gestureNameId == 8:
         keyboard.press("right")
-    elif gestureNameId == 1:
-        keyboard.press("q")
     else:
         pass
 
@@ -126,6 +133,8 @@ while True:
 
     if cv2.waitKey(1) == ord('q'):
         break
+    if counter < 0:
+        counter += 1
 
 """
 Release the webcam and quit all windows
