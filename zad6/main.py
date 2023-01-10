@@ -128,7 +128,7 @@ while True:
     cv2.imshow("Gesture Handler", frame)
 
     """
-    Quit the program if hit 'q' on keyboard or show victory sign
+    Quit the program if hit 'q' on keyboard
     """
 
     if cv2.waitKey(1) == ord('q'):
